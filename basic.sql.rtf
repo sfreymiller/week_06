@@ -1,0 +1,315 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1671\cocoasubrtf600
+{\fonttbl\f0\fnil\fcharset0 HelveticaNeue;\f1\fmodern\fcharset0 Courier;\f2\fnil\fcharset0 HelveticaNeue-Italic;
+}
+{\colortbl;\red255\green255\blue255;\red19\green19\blue28;\red255\green255\blue255;\red20\green19\blue28;
+\red20\green19\blue28;\red19\green19\blue28;\red237\green239\blue242;\red19\green19\blue28;}
+{\*\expandedcolortbl;;\cssrgb\c9841\c9845\c14538;\cssrgb\c100000\c100000\c100000\c0;\cssrgb\c9878\c9885\c14567;
+\cssrgb\c9952\c9967\c14623;\cssrgb\c9804\c9804\c14510;\cssrgb\c94510\c94902\c96078;\cssrgb\c9804\c9804\c14510;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720\sl360\partightenfactor0
+
+\f0\fs32 \cf2 \cb3 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 1. Write a query to select all of the columns in \cf4 \cb3 \strokec4 the\'a0
+\f1\fs28 \cf4 \cb3 \strokec4 tutorial.us_housing_units
+\f0\fs32 \cf4 \cb3 \strokec4 \'a0table without using\'a0
+\f1\fs28 \cf4 \cb3 \strokec4 *\
+\
+\cf5 \cb3 \strokec5 SELECT year,\
+month,\
+month_name,\
+south,\
+west,\
+midwest,\
+northeast\
+FROM tutorial.us_housing_units\
+\cf4 \cb3 \strokec4 \
+# This took longer than using *, probably because it had to iterate through (can I use this phrasing here?) and select each column by name\
+\
+# Does indentation matter in SQL? It appears not, but it looks cleaner to have the columns lined up together\
+\
+2. 
+\f0\fs32 \cf4 \cb3 \strokec4 Write a query to select all of the columns in\'a0
+\f1\fs28 \cf4 \cb3 \strokec4 tutorial.us_housing_units
+\f0\fs32 \cf4 \cb3 \strokec4 \'a0and rename them so that their first letters are capitalized.\
+\
+SELECT year as "Year",\
+month as "Month",\
+month_name as "Month Name",\
+south as "South",\
+west as "West",\
+midwest as "Midwest",\
+northeast as "Northeast"\
+FROM tutorial.us_housing_units\
+\
+3. \cf6 \cb1 \strokec6 Write a query that uses the\'a0
+\f1\fs28 \cb7 LIMIT
+\f0\fs32 \cb1 \'a0command to restrict the result set to only 15 rows.\cf4 \cb3 \strokec4 \
+\
+SELECT *\
+FROM tutorial.us_housing_units\
+LIMIT 15\
+\
+# I did not tweet out my SQL love, oops.\
+\
+4. \cf6 \cb1 \strokec6 Did the West Region ever produce\'a0
+\f2\i more than 50,000
+\f0\i0 \'a0housing units in one month?\
+\
+SELECT *\
+FROM tutorial.us_housing_units\
+WHERE west > 50\
+\
+# Yes, the West produced more than 50,000 units per month in June of 1978, August of 1978, and December of 2004.\
+\
+5. Did the South Region ever produce\'a0
+\f2\i 20,000 or fewer
+\f0\i0 \'a0housing units in one month?\
+\
+SELECT *\
+FROM tutorial.us_housing_units\
+WHERE south <= 20\
+\
+# Yes, the South produced 20,000 or fewer units per month in January 2011, May 2011, January 2012 and February 2012.\
+\
+\pard\pardeftab720\sl360\partightenfactor0
+\cf6 6. Write a query that only shows rows for which the month name is February.\
+\
+\pard\pardeftab720\sl360\partightenfactor0
+\cf6 SELECT *\
+  FROM tutorial.us_housing_units\
+ WHERE month_name = 'February'\
+\
+7. Write a query that only shows rows for which the\'a0
+\f1\fs28 \cb7 month_name
+\f0\fs32 \cb1 \'a0starts with the letter "N" or an earlier letter in the alphabet.\
+\
+SELECT *\
+  FROM tutorial.us_housing_units\
+ WHERE month_name <= 'November'\
+\
+# I typed out the whole month name because using just \'92N\'92 as the value would have excluded the month of November. (Using \'91o\'92 also works lol)\
+\
+8. Write a query that calculates the sum of all four regions in a separate column.\
+\
+SELECT south,\
+west,\
+midwest,\
+northeast,\
+south + west + midwest + northeast AS total_units\
+  FROM tutorial.us_housing_units\
+\
+# Not all of the resulting values were rounded to the nearest tenth - I wonder if this is related to the internal formatting of this table\
+\
+9. Write a query that returns all rows for which more units were produced in the West region than in the Midwest and Northeast combined.\
+\
+SELECT south,\
+west,\
+midwest,\
+northeast\
+  FROM tutorial.us_housing_units\
+  WHERE west > (midwest + northeast)\
+\
+10. Write a query that calculates the percentage of all houses completed in the United States represented by each region. Only return results from the year 2000 and later.\
+\
+SELECT year,\
+south/(south + west + midwest + northeast)*100 AS pct_south,\
+midwest/(south + west + midwest + northeast)*100 AS pct_midwest,\
+northeast/(south + west + midwest + northeast)*100 AS pct_northeast,\
+west/(south + west + midwest + northeast)*100 AS pct_west\
+  FROM tutorial.us_housing_units\
+  WHERE year >= 2000\
+\
+# I realized that I can\'92t define a name, like usa_total, and then divide other values by that name. SQL doesn\'92t recognize it.\
+\
+11. Write a query that returns all rows for which Ludacris was a member of the group.\
+\
+SELECT *\
+  FROM tutorial.billboard_top_100_year_end\
+ WHERE "group" ILIKE \'91ludacris%'\
+\
+# This gave me 23 rows.\
+\
+\pard\pardeftab720\sl360\partightenfactor0
+\cf8 \outl0\strokewidth0 SELECT *\
+  FROM tutorial.billboard_top_100_year_end\
+ WHERE "group" ILIKE \'91%ludacris%'\
+\
+# This gave 61 rows because Ludacris can also FEATURE AHHHH\
+\
+12. \cf6 \outl0\strokewidth0 \strokec6 Write a query that returns all rows for which the first artist listed in the group has a name that begins with "DJ".\
+\
+SELECT *\
+  FROM tutorial.billboard_top_100_year_end\
+ WHERE "group" LIKE 'DJ%'\
+\
+13. Write a query that shows all of the entries for Elvis and M.C. Hammer.\
+\
+SELECT *\
+  FROM tutorial.billboard_top_100_year_end\
+ WHERE "artist" ILIKE '%m%c%hammer%'\
+\
+# I only got two entries, both spelling his name M.C. Hammer\
+\
+SELECT *\
+  FROM tutorial.billboard_top_100_year_end\
+ WHERE "artist" ILIKE '%elvis%'\
+\
+# Elvis had 36 rows, all under the artist name \'93Elvis Presley\'94\
+\
+SELECT *\
+  FROM tutorial.billboard_top_100_year_end\
+ WHERE "artist" IN ('M.C. Hammer', 'Elvis Presley')\
+\
+# This returned 38 rows, as expected\
+# Just checked the answer, ahhh didn\'92t realize he went under just \'93Hammer\'94 but should have checked that and M.C./MC. I will not forget this moment.\
+\
+13. Write a query that shows all top 100 songs from January 1, 1985 through December 31, 1990.\
+\
+SELECT *\
+FROM tutorial.billboard_top_100_year_end\
+WHERE year BETWEEN 1985 AND 1990\
+\
+14. Write a query that shows all of the rows for which\'a0
+\f1\fs28 \cb7 song_name
+\f0\fs32 \cb1 \'a0is null.\
+\
+SELECT *\
+FROM tutorial.billboard_top_100_year_end\
+WHERE song_name IS NULL\
+\
+15. Write a query that surfaces all rows for top-10 hits for which Ludacris is part of the Group.\
+\
+SELECT *\
+  FROM tutorial.billboard_top_100_year_end\
+ WHERE year_rank <= 10\
+   AND "group" ILIKE '%luda%'\
+\
+# I wasn\'92t taking any chances with names this time\
+\
+16. Write a query that surfaces the top-ranked records in 1990, 2000, and 2010.\
+\
+SELECT *\
+  FROM tutorial.billboard_top_100_year_end\
+ WHERE year_rank = 1\
+   AND year IN ('1990', '2000', '2010')\
+\
+# Faith Hill came as a surprise!\
+# I also didn\'92t need the quotes around numbers, but it still worked.\
+\
+17. Write a query that lists all songs from the 1960s with "love" in the title.\
+\
+SELECT *\
+  FROM tutorial.billboard_top_100_year_end\
+ WHERE year BETWEEN 1960 AND 1969\
+   AND song_name ILIKE '%love%'\
+\
+# 89 hits! Comparing this to the 2000s (68, where is the love)\
+\
+18. Write a query that returns all rows for top-10 songs that featured either Katy Perry or Bon Jovi.\
+\
+SELECT *\
+  FROM tutorial.billboard_top_100_year_end\
+ WHERE year_rank <= 10\
+   AND "group" ILIKE '%katy%perry%' OR "group" ILIKE '%bon%jovi%'\
+\
+# 19 songs, seems a little low\'85\
+\
+SELECT *\
+  FROM tutorial.billboard_top_100_year_end\
+ WHERE year_rank <= 10\
+   AND ("group" ILIKE '%katy%perry%' OR "group" ILIKE '%bon%jovi%')\
+\
+# hmmm the addition of parentheses decreased it to 8 songs, all in the top 10 - the original 19 didn\'92t include ranks of top 10 for some reason\
+\
+\pard\pardeftab720\sl360\partightenfactor0
+\cf6 19. Write a query that returns all songs with titles that contain the word "California" in either the 1970s or 1990s.\
+\
+SELECT *\
+  FROM tutorial.billboard_top_100_year_end\
+ WHERE song_name ILIKE '%california%'\
+   AND (year BETWEEN 1970 AND 1979\
+   OR year BETWEEN 1990 AND 1999)\
+\
+# This seems low (only 3 songs)\
+# It was right though! I also should have used LIKE in this case because California was capitalized in the prompt. Live and learn.\
+\
+20. Write a query that lists all top-100 recordings that feature Dr. Dre before 2001 or after 2009. (Ooh!)\
+\
+SELECT *\
+  FROM tutorial.billboard_top_100_year_end\
+ WHERE year_rank <= 100\
+   AND artist ILIKE '%dr%dre%' \
+   AND (year < 2001\
+   OR year > 2009)\
+\
+\pard\pardeftab720\sl360\partightenfactor0
+\cf8 \outl0\strokewidth0 #I tried %dre% at first to check for other names and ended up with some Dream Weavers songs\
+# 8 results for this one!\
+# oops, I got the wrong number - should have done \'93group\'94 rather than \'93artist\'94! Good reminder to pay extra attention to detail.\
+\
+SELECT *\
+  FROM tutorial.billboard_top_100_year_end\
+ WHERE year_rank <= 100\
+   AND \'93group\'94 ILIKE '%dr%dre%' \
+   AND (year < 2001\
+   OR year > 2009)\
+\
+# This one has the correct 13 songs.\
+\
+21. \cf6 \outl0\strokewidth0 \strokec6 Write a query that returns all rows for songs that were on the charts in 2013 and do not contain the letter "a".\
+\
+SELECT *\
+  FROM tutorial.billboard_top_100_year_end\
+ WHERE year = 2013\
+   AND "song_name" NOT ILIKE '%a%'\
+\
+#This was cool. 66 songs!\
+\
+\pard\pardeftab720\sl360\partightenfactor0
+\cf6 22. Write a query that returns all rows from 2012, ordered by song title from Z to A.\
+\
+SELECT *\
+  FROM tutorial.billboard_top_100_year_end\
+ WHERE year = 2012\
+   ORDER BY song_name DESC\
+\
+# This is really bringing me down memory lane.\
+# Without Youuuuuu\
+\
+23. Write a query that returns all rows from 2010 ordered by rank, with artists ordered alphabetically for each song.\
+\
+SELECT *\
+  FROM tutorial.billboard_top_100_year_end\
+  WHERE year = 2010\
+ ORDER BY year_rank, artist\
+\
+# Empire State of Mind. What a song.\
+\
+24. Write a query that shows all rows for which T-Pain was a group member, ordered by rank on the charts, from lowest to highest rank (from 100 to 1).\
+\
+SELECT *\
+  FROM tutorial.billboard_top_100_year_end\
+  WHERE "group" ILIKE '%t%pain%'\
+  ORDER BY year_rank DESC\
+\
+# Wow, T-Pain truly knows how to be featured.\
+\
+SELECT *\
+  FROM tutorial.billboard_top_100_year_end\
+  WHERE "group" ILIKE '%pitbull%'\
+  ORDER BY year_rank DESC\
+\
+# More so than Pitbull! I learned something new today. (52 for T Pain, 23 for Pitbull)\
+\
+25. Write a query that returns songs that ranked between 10 and 20 (inclusive) in 1993, 2003, or 2013. Order the results by year and rank, and leave a comment on each line of the\'a0
+\f1\fs28 \cb7 WHERE
+\f0\fs32 \cb1 \'a0clause to indicate what that line does.\
+\
+SELECT *\
+  FROM tutorial.billboard_top_100_year_end\
+  WHERE year IN ('1993', '2003', '2013') -- This limits years to 1993, 2003, and 2013\
+  AND year_rank BETWEEN 10 AND 20 -- This returns songs with ranks between 10 and 20, inclusive\
+  ORDER BY year, year_rank -- This orders results by year and year rank\
+\
+# I graduated from college in 2013, THE FEELINGS}
